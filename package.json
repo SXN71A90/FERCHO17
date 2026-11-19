@@ -1,0 +1,16 @@
+{
+  "name": "lfc-comunidad-videos",
+  "version": "1.0.0",
+  "description": "Comunidad LFC con registro, inicio de sesi\u00f3n y publicaci\u00f3n de videos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "multer": "^1.4.5-lts.1"
+  }
+}

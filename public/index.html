@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LFC - Comunidad de videos</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">L</span>FC</a>
+  <form class="search" id="searchForm"><input id="searchInput" type="search" placeholder="Buscar videos..." autocomplete="off"><button type="submit">⌕</button></form>
+  <div class="account" id="accountArea"><button class="outline" id="loginOpen">Iniciar sesión</button><button class="red" id="registerOpen">Registrarse</button></div>
+</header>
+<nav class="nav">
+  <a class="active" href="#" data-filter="all">▣ Todos los videos</a>
+  <a href="#" data-filter="mine">▤ Mis videos</a>
+</nav>
+<main>
+  <section id="catalogView">
+    <div class="section-heading"><div><h1>Videos de la comunidad</h1><p id="resultCount">Explora lo que publica la comunidad LFC</p></div>
+      <button class="red" id="publishOpen">＋ Publicar video</button></div>
+    <div class="video-grid" id="videoGrid"></div>
+    <div class="empty-state" id="emptyState" hidden><div class="empty-icon">▣</div><h2>No hay videos todavía</h2><p>Inicia sesión y publica el primer video de la comunidad.</p></div>
+  </section>
+  <section id="playerView" hidden>
+    <button class="back-button" id="backButton">← Volver a los videos</button>
+    <div class="player-layout"><div class="player-main">
+      <div class="player-frame"><video id="mainVideo" controls playsinline></video></div>
+      <h1 id="playingTitle"></h1><p class="video-meta" id="playingMeta"></p><p id="playingDescription" class="description"></p>
+      <div class="video-stats" id="playingStats"></div>
+      <div class="video-actions"><button class="outline" id="likeButton">♡ Me gusta</button><button class="outline" id="deleteVideo" hidden>Eliminar mi video</button></div>
+      <section class="comments-section">
+        <h2>Comentarios <span id="commentsCount" class="muted"></span></h2>
+        <form id="commentForm" class="comment-form">
+          <textarea id="commentText" rows="2" maxlength="500" placeholder="Escribe un comentario..." required></textarea>
+          <button class="red" type="submit" id="commentSubmit">Comentar</button>
+        </form>
+        <p class="form-error" id="commentError"></p>
+        <div id="commentsList" class="comments-list"></div>
+      </section>
+    </div><aside class="up-next"><h2>Más videos</h2><div id="upNextList"></div></aside></div>
+  </section>
+</main>
+<footer><span class="brand small"><span class="brand-mark">L</span>FC</span><span>Comunidad de videos</span></footer>
+
+<div class="modal" id="authModal" hidden><div class="modal-card">
+  <button class="close" data-close="authModal">×</button><h2 id="authTitle">Iniciar sesión</h2><p class="muted" id="authSubtitle">Entra a tu cuenta LFC.</p>
+  <form id="authForm"><label>Nombre de usuario</label><input id="authUsername" required minlength="3" maxlength="20" autocomplete="username" placeholder="Ej. usuario123">
+  <label>Contraseña</label><input id="authPassword" type="password" required minlength="8" autocomplete="current-password" placeholder="Mínimo 8 caracteres">
+  <p class="form-error" id="authError"></p><button class="red full" type="submit" id="authSubmit">Entrar</button></form>
+  <p class="switch-auth" id="switchAuth">¿No tienes cuenta? <button type="button" id="switchAuthButton">Regístrate</button></p>
+</div></div>
+
+<div class="modal" id="publishModal" hidden><div class="modal-card">
+  <button class="close" data-close="publishModal">×</button><h2>Publicar un video</h2><p class="muted">Comparte un video con la comunidad LFC.</p>
+  <form id="publishForm"><label>Título</label><input id="videoTitle" required maxlength="90" placeholder="Nombre del video">
+  <label>Descripción (opcional)</label><textarea id="videoDescription" maxlength="500" rows="3" placeholder="Cuéntanos de qué trata..."></textarea>
+  <label>Archivo de video</label><input id="videoFile" type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime" required>
+  <small class="muted">Formatos: MP4, WebM, OGG o MOV. Tamaño máximo: 500 MB.</small>
+  <div class="progress" id="uploadProgress" hidden><div id="progressBar"></div></div><p class="form-error" id="publishError"></p>
+  <button class="red full" type="submit" id="publishSubmit">Publicar</button></form>
+</div></div>
+<script src="app.js"></script>
+</body></html>
