@@ -9,3 +9,6 @@ uploads/*
 
 .DS_Store
 Thumbs.db
+probar-supabase.js
+server-backup.js
+uploads/
