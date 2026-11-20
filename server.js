@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
+const PgSession = require("connect-pg-simple")(session);
+const { Pool } = require("pg");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const path = require("path");
@@ -40,10 +42,41 @@ function requireAuth(req, res, next) {
   next();
 }
 
+if (!process.env.DATABASE_URL) {
+  throw new Error("Falta DATABASE_URL en el archivo .env o en las variables de entorno.");
+}
+if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {
+  throw new Error("Configura SESSION_SECRET con al menos 32 caracteres aleatorios.");
+}
+
+// Render termina HTTPS en su proxy. Esto permite emitir cookies seguras.
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+
+const sessionPool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    ca: fs.readFileSync(path.join(ROOT, "prod-ca-2021.crt"), "utf8"),
+    rejectUnauthorized: true
+  },
+  max: 5,
+  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000
+});
+sessionPool.on("error", (error) => {
+  console.error("Error en el pool de sesiones PostgreSQL:", error.message);
+});
+
 app.use(express.json({ limit: "1mb" }));
 app.use(session({
   name: "lfc.sid",
-  secret: process.env.SESSION_SECRET || "cambia-esta-clave-en-produccion-LFC-2026",
+  store: new PgSession({
+    pool: sessionPool,
+    schemaName: "public",
+    tableName: "session",
+    createTableIfMissing: false,
+    pruneSessionInterval: 15 * 60
+  }),
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
